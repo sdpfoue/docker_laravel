@@ -10,9 +10,11 @@ RUN      apt-get update \
          && echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" |  tee /etc/apt/sources.list.d/php.list \
          && apt-get update\
          && apt-get install -y php7.4 supervisor php7.4-gd php7.4-zip php7.4-mbstring php7.4-dom php7.4-curl  php7.4-pdo-mysql php7.4-redis\
-         && wget https://getcomposer.org/composer-stable.phar\
-         && mv composer-stable.phar /usr/local/bin/composer\
-         && chmod +x /usr/local/bin/composer\
-         && composer config repo.packagist composer https://mirrors.aliyun.com/composer/ \
-             && composer global require "laravel/installer" \
+         && wget https://getcomposer.org/composer-stable.phar
+
+         RUN apt-get install -y curl && curl -sS https://getcomposer.org/installer | php
+         RUN mv composer.phar /usr/local/bin/composer
+         RUN chmod +x /usr/local/bin/composer
+         RUN composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/
+         RUN composer global require "laravel/installer" \
          && a2enmod rewrite
